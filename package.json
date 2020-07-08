@@ -1,48 +1,34 @@
 {
-  "name": "amocrm-widget-starter-kit",
+  "name": "tagosago-js-widget",
   "version": "1.1.0",
-  "description": "AmoCrm widget build helper",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "gulp",
+    "buildenv": "set NODE_ENV=production&&gulp build",
     "build": "gulp build"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/xtratio/amocrm-widget-starter-kit.git"
-  },
-  "keywords": [
-    "crm",
-    "amocrm",
-    "kit",
-    "widget"
-  ],
-  "author": "xtratio <extremumratio@gmail.com> (https://github.com/xtratio)",
   "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/xtratio/amocrm-widget-starter-kit/issues"
-  },
-  "homepage": "https://github.com/xtratio/amocrm-widget-starter-kit#readme",
   "devDependencies": {
-    "del": "^2.2.2",
-    "jshint": "^2.9.4",
-    "jshint-stylish": "^2.2.1",
-    "jsonlint": "^1.6.2",
-    "semver": "^5.3.0",
-    "gulp": "^3.9.1",
-    "gulp-autoprefixer": "^3.1.1",
-    "gulp-include": "^2.3.1",
-    "gulp-jshint": "^2.0.4",
-    "gulp-jsonlint": "^1.1.1",
-    "gulp-csslint": "^1.0.0",
-    "gulp-strip-comments": "^2.4.3",
-    "gulp-util": "^3.0.8",
-    "gulp-zip": "^4.0.0",
-    "gulp-json-modify": "^1.0.2"
+    "del": "*",
+    "gulp": "3",
+    "gulp-autoprefixer": "*",
+    "gulp-csslint": "*",
+    "gulp-include": "*",
+    "gulp-jshint": "*",
+    "gulp-json-modify": "*",
+    "gulp-jsonlint": "*",
+    "gulp-strip-comments": "*",
+    "gulp-util": "*",
+    "gulp-zip": "*",
+    "jshint": "*",
+    "jshint-stylish": "*",
+    "jsonlint": "*",
+    "semver": "*",
+    "graceful-fs": "*"
   },
-  "jshintConfig":{
+  "jshintConfig": {
     "globals": {
-      "define": false  
+      "define": false
     },
     "esversion": 5,
     "bitwise": true,

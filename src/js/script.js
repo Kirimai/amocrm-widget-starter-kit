@@ -1,7 +1,7 @@
 define(['jquery'], function($){
-    var CustomWidget = function () {
-    	var widget = this,
-            system = widget.system();
+	var CustomWidget = function () {
+		var widget = this,
+			system = widget.system();
 
 		// gulp include example
 		//=require utils.js
@@ -9,52 +9,72 @@ define(['jquery'], function($){
 		this.callbacks = {
 			render: function(){
 				if (typeof (AMOCRM.data.current_card) != 'undefined' && AMOCRM.data.current_card.id == 0) {
-                    return false; // // do not render on contacts/add || leads/add if needed
-                }
+					return false; // // do not render on contacts/add || leads/add if needed
+				}
 
 				// simple layout
-				var html = '<div class="xtratio_mywidget-wrap">This is widget example</div>' +
+				var html = '<div class="tag-osago-widget">Цена ОСАГО = Базовый тариф x ТК x КБМ x КВС x ОК x КМ x КС x КН x КП</div>' +
 				'<link type="text/css" rel="stylesheet" href="' + widget.params.path + '/style.css">';
 
 				widget.render_template({
-                    caption: {
-                        class_name: "xtratio_mywidget"
-                    },
-                    body: html,
-                    render: ''
-                });
+					caption: {
+						class_name: "tag-osago-container"
+					},
+					body: html,
+					render: ''
+				});
 
 				// template load example 1
 				utils.getTemplate(
-                    'template_example',
-                    function(template) {
-                        $('.xtratio_mywidget-wrap').append(
-                            template.render({
-									model: { value: 12.56 }
-                                }
-                            )
-                        )
-                    });
+					'container',
+					function(template) {
+						$('.tag-osago-widget').append(
+							template.render(
+								{
+									model: { 
+										kbm: 0.9 
+									}
+								}
+							)
+						);
+					}
+				   );
 				
 				// template load example 2
 				utils.getTemplate(
-                    'template_example_array',
-                    function(template) {
-                        $('.xtratio_mywidget-wrap').append(
-                            template.render({
-                                    id: 'xtratio_mywidget_example_array',
-                                    items: [
-                                        { id: "example_item_1", url: "#", action: "foo", name: "item 2" },
-                                        { id: "example_item_2", url: "#", action: "bar", name: "item 2" }
-                                    ]
-                                }
-                            )
-                        )
-                    });
+					'osago_result',
+					function(template) {
+						$('.tag-osago-widget').append(
+							template.render(
+								{
+									id: 'osago_result',
+									items: [
+										{
+											id: "osago_alfa", 
+											url: "#", 
+											name: "АльфаСтрахование",
+											summ: 'osago_base*osago_tk*osago_kbm*osago_kvs*osago_ok*osago_km*osago_ks*osago_kn*osago_kp',
+											osago_base: "",
+											osago_tk: "",
+											osago_kbm: "",
+											osago_kvs: "",
+											osago_ok: "",
+											osago_km: "",
+											osago_ks: "",
+											osago_kn: "",
+											osago_kp: ""
+										}
+									]
+								}
+							)
+						);
+					}
+				);
 
 				return true;
 			},
 			init: function(){
+
 				console.log('init');
 				return true;
 			},
@@ -63,6 +83,7 @@ define(['jquery'], function($){
 				return true;
 			},
 			settings: function(){
+
 				return true;
 			},
 			onSave: function(){
@@ -72,27 +93,25 @@ define(['jquery'], function($){
 			destroy: function(){
 				
 			},
-			contacts: {
-					//select contacts in list and clicked on widget name
-					selected: function(){
-						console.log('contacts');
-					}
-				},
-			leads: {
-					//select leads in list and clicked on widget name
-					selected: function(){
-						console.log('leads');
-					}
-				},
-			tasks: {
-					//select taks in list and clicked on widget name
-					selected: function(){
-						console.log('tasks');
-					}
-				}
+			loadPreloadedData: function() {
+				
+				return true;
+			},
+			loadElements: function() {
+				
+				return true;
+			},
+			linkCard: function() {
+				
+				return true;
+			},
+			searchDataInCard: function() {
+				
+				return true;
+			}
 		};
 		return this;
-    };
+	};
 
 return CustomWidget;
 });

@@ -1,0 +1,8 @@
+<ul id="{{ id }}" class="model-items">
+    {% for item in items %}
+    	<li>
+    		<a href="{{ item.url }}" class="model-item" data-id="{{ item.id }}">{{ item.summ }}</a>
+			{{ item.osago_base }} * {{ item.osago_tk }} * {{ item.osago_kbm }} * {{ item.osago_kvs }} * {{ item.osago_ok }} * {{ item.osago_km }} * {{ item.osago_ks }} * {{ item.osago_kn }} * {{ item.osago_kp }}
+    	</li>
+    {% endfor %}
+</ul>

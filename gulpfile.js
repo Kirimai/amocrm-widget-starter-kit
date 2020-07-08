@@ -18,7 +18,7 @@ var gulp = require('gulp'),
 var path = {
         src: './src/',
         dist: './dist/',
-		publish: './publish/'
+        publish: './publish/'
     },
     zipFileName = 'widget.zip';
 
