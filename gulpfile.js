@@ -50,6 +50,23 @@ gulp.task('js', ['jslint'], function(){
             .pipe(gulp.dest(path.dist))
 });
 
+gulp.task('js2', ['jslint'], function(){
+   return gulp.src(path.src+"js/*.js")
+            .pipe(include())
+                .on('error', console.log)
+            .pipe(strip())
+            .pipe(gulp.dest(path.dist+'/js/'))
+});
+
+gulp.task('jsplugins', ['jslint'], function(){
+   return gulp.src(path.src+"plugins/*.js")
+            .pipe(include())
+                .on('error', console.log)
+            .pipe(strip())
+            .pipe(gulp.dest(path.dist+'/plugins/'))
+});
+
+
 gulp.task('i18n', ['clean'], function(){
    return gulp.src(path.src+'i18n/*.json')
             .pipe(jsonlint())
@@ -59,14 +76,14 @@ gulp.task('i18n', ['clean'], function(){
 });
 
 gulp.task('css', ['clean'], function(){
-   return gulp.src(path.src+'css/style.css')
+   return gulp.src(path.src+'css/*')
             .pipe(csslint())
             .pipe(csslint.formatter("compact"))
             .pipe(autoprefixer())
-            .pipe(gulp.dest(path.dist))
+            .pipe(gulp.dest(path.dist+'/css/'))
 });
 
-gulp.task('manifest', ['js', 'i18n', 'css', 'img', 'templates'], function(){
+gulp.task('manifest', ['js','js2', 'jsplugins', 'i18n', 'css', 'img', 'templates'], function(){
    return gulp.src(path.src+"manifest.json")
             .pipe(jsonlint())
             .pipe(jsonlint.failOnError())

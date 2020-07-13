@@ -1,0 +1,216 @@
+.tagosago-form-margin {
+	margin-top: 10px;
+	word-wrap: break-word;
+	position: relative;
+}
+.tagosago-form .tagosago-textarea {
+	height: 189px;
+	width: 100%;
+	min-height: 58px;
+	resize: none;
+	display: block;
+}
+.tagosago-form-dp .tagosago_dp_message {
+	height: 189px;
+	width: 100%;
+	min-height: 58px;
+	resize: none;
+	display: block;
+}
+.tagosago-form .select2-container--default .select2-search--inline .select2-search__field {
+	font-size: 15px;
+	height: 15px;
+	line-height: 1;
+	width: 100% !important;
+}
+.tagosago-form .select2-container--default.select2-container--focus .select2-selection--multiple {
+	border: 1px solid #d4d5d8;
+	outline: 0;
+}
+.tagosago-form .select2-container .select2-selection--multiple {
+	border: 1px solid #d4d5d8;
+}
+.tagosago-form .select2-container--default .select2-selection--multiple .select2-selection__choice {
+	background-color: #fff;
+}
+.tagosago-form .select2-container--default .select2-selection--multiple .select2-selection__choice__remove {
+	color: #dd6567;
+}
+.tagosago-form .select2-container--default .select2-selection--multiple .select2-selection__rendered {
+	max-height: 73px;
+	overflow-y: auto;
+}
+.tagosago_sending_popup {
+	background-color: #fff;
+	border: 1px solid #d4d5d8;
+	border-top: 0px;
+	border-radius: 3px;
+	box-sizing: border-box;
+	display: none;
+	padding: 5px 7px;
+	position: absolute;
+	top: 30px;
+	right: 0;
+	left: 0;
+	z-index: 10;
+}
+#tagosago_sending_input {
+	width: 100%;
+}
+#tagosago_sending_wrapper .tagosago_sending_popup_row {
+	display: block;
+	align-items: center;
+	padding-bottom: 10px;
+}
+#tagosago_sending_wrapper .tagosago_sending_popup_label {
+	width: 67px;
+	flex-shrink: 0;
+	cursor: pointer;
+}
+#tagosago_sending_wrapper .tagosago_sending_popup_input .date_field_wrapper,
+#tagosago_sending_wrapper .tagosago_sending_popup_input .text-input {
+	height: 29px;
+}
+#tagosago_err {
+	color: #FF8686;
+	font-size: 11px;
+}
+#tagosago_err p {
+	font-size: 11px;
+}
+.tagosago-form {
+	cursor: default;
+}
+.tagosago-form input:hover, .tagosago-form button:hover {
+	cursor: pointer;
+}
+.tagosago_edit_templates {
+	color: #2a84c0;
+}
+.tagosago-modal-window .modal-body {
+	width: 760px;
+	min-height: 478px;
+	padding: 0;
+}
+#tagosago_edit_tpl, #tagosago_upd_tpl {
+	font-size: smaller;
+	color: blue;
+	text-decoration: underline;
+	cursor: pointer;
+}
+.tagosago_edit_tpl, .tagosago_upd_tpl {
+	color: #2a84c0;
+}
+#tagosago_tp_macroses {
+	overflow-y: auto;
+	height: 200px;
+}
+#tagosago_tp_macroses .tag_osago_tpl_markers__title {
+	margin-bottom: 15px;
+	font-weight: bold;
+}
+#tagosago_tp_macroses .marker-list__tag-bot {
+	overflow: hidden;
+	margin-right: 5px;
+	text-overflow: ellipsis;
+	flex-basis: 200px;
+}
+.tag_osago_tpl_markers .tagosago_dp_marker_label {
+	cursor: pointer;
+}
+#tagosago_tp_details {
+	width: 55%;
+	float: left;
+	padding: 25px;
+}
+#tagosago_tp_list {
+	float: left;
+	width: 35%;
+	padding: 25px 25px 25px 0;
+}
+#sms-templates_header {
+	font-size: 20px;
+	line-height: 37px;
+	color: #313942;
+	margin: 0 0 6px;
+}
+.sms-templates_holder {
+	max-height: 220px;
+	overflow-y: auto;
+}
+.sms-templates_holder .template-item__body {
+	padding: 3px 33px 3px 5px;
+}
+.sms-templates_holder .template-item__body-inner {
+	width: 100%;
+}
+.sms-templates_holder .template-item__name {
+	color: inherit;
+}
+.sms-templates_holder .template-item__body-edit {
+	padding: 3px 10px 0 0;
+}
+#tagosago_savetps {
+	float: right;
+}
+#tagosago_tpname {
+	width: 100%;
+	margin-bottom: 15px;
+}
+#tagosago_tpcontent {
+	width: 100%;
+	margin-bottom: 15px;
+	min-height: 160px;
+}
+#sms-templates_wrapper {
+	margin-bottom: 15px;
+	height: 375px;
+}
+#tagosago_tp_macroses {
+	border: 1px solid #dbdedf;
+	border-radius: 3px;
+	padding: 5px;
+}
+.tagosago-form-dp {
+	width: 420px;
+	margin-bottom: 10px;
+}
+#tagosago_sortable .tpl-active {
+	border: 1px solid #4077d6;
+}
+#tagosago_sortable .tpl-active .template-item__body {
+	background: #4c8bf7;
+}
+#tagosago_sortable .tpl-active .template-item__name {
+	color: #fff;
+}
+.tagosago_confirm_ruls .control-checkbox__text {
+	font-size: 14px;
+}
+.tagosago-block-delayed {
+	display: none;
+}
+#tagosago_get_all_contact {
+	width: 100%;
+}
+#tagosago_char_count {
+	width: 100%;
+	background-color: #fff;
+	color: #b5b5b5;
+	font-size: 13px;
+	position: relative;
+	left: 1px;
+	top: -2px;
+	margin-bottom: 5px;
+	display: block;
+	margin-top: 3px;
+}
+.tagosago_status_sms {
+	margin-left: 5px;
+	display: none;
+	height: 16px;
+}
+.tagosago_status_sms img{
+	cursor: pointer;
+	height: 10px;
+}

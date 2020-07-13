@@ -3,7 +3,7 @@
     "name": "widget.name",
     "description": "widget.description",
     "short_description": "widget.short_description",
-    "version": "1.0.47",
+    "version": "1.0.1",
     "interface_version": 2,
     "init_once": true,
     "locale": [
@@ -12,8 +12,8 @@
     ],
     "installation": true,
     "support": {
-      "link": "https://tag-osago.ru",
-      "email": "info@tag-osago.ru"
+      "link": "https://www.amocrm.com",
+      "email": "support@amocrm.com"
     }
   },
   "locations": [

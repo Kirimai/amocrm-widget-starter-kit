@@ -1,0 +1,49 @@
+<div id="diag_card_list">
+    {% for item in items %}
+		<div class="pipeline_leads__item">
+			<div class="pipeline_leads__info">
+				<div class="pipeline_leads__top-block">
+					<div class="pipeline_leads__linked-entities">
+						<span class="pipeline_leads__linked-entities_company">До: {{ item.expires}}</span>
+					</div>
+					<div class="pipeline_leads__top-date">{{ item.price}}</div>
+				</div>
+				<div class="pipeline_leads__row">
+					<div class="pipeline_leads__field">От: {{ item.save}}</div>
+				</div>
+				<div class="pipeline_leads__lead-title">
+					<a class="pipeline_leads__title-text h-text-overflow" target="_blank" title="https://tag-osago.ru{{ item.print }}" href="https://tag-osago.ru{{ item.print }}">
+					Распечатать {{ item.num}}
+					</a>
+				</div>
+				<div class="pipeline_leads__row">
+					<div class="pipeline_leads__field">VIN: {{ item.vin}}</div>
+				</div>
+				<div class="pipeline_leads__middle-block">
+					<span class="pipeline_leads__note pipeline_leads__grey h-text-overflow" title="Шины: {{ item.tire}}">Пробег: {{ item.mileage}}</span>
+					<div class="pipeline_leads__tags ">
+						{% if item.status == true %}
+							<span class="pipeline_leads__task-days pipeline_leads__task-days_green">Действует</span>
+						{% endif %}
+						{% if not item.status == true %}
+							<span class="pipeline_leads__task-days pipeline_leads__task-days_red">Закончилась</span>
+						{% endif %}
+					</div>
+					<div class="pipeline_leads__tasks">
+						{% if item.status == true %}
+							<span class="pipeline_leads__task-icon pipeline_leads__task-icon_green" title="Действует"></span>
+						{% endif %}
+						{% if not item.status == true %}
+							 <span class="pipeline_leads__task-icon pipeline_leads__task-icon_red" title="Закончилась"></span>
+						{% endif %}
+					</div>
+				</div>
+				<label class="control-checkbox pipeline_leads__lead-checkbox  ">
+					<div class="control-checkbox__body">
+						<span class="control-checkbox__helper "></span>
+					</div>
+				</label>
+			</div>
+		</div>
+    {% endfor %}
+</div>

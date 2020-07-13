@@ -1,15 +1,14 @@
 {
     "widget":{
-        "name":"ТехАвтоГрупп",
-        "short_description":"Виджет для ТО + ОСАГО",
+        "name":"Мой виджет",
+        "short_description":"Короткое описание виджета",
         "description":"Полное описание виджета",
         "tour_description":"Описание виджета"
     },
     "settings":{
         "login":"Логин",
         "api_key":"ключ API",
-        "account":"Аккаунт",
-        "field_vin":"Поле VIN"
+        "account":"Аккаунт"
     },
     "advanced":{
         "title":"Заголовок меню в настройках"
@@ -26,18 +25,5 @@
     },
     "dp":{
         "message": "Сообщение"
-    },
-    "templates": {
-
-    },
-    "tagosago_edit_templates": {
-
-    },
-    "userLang": {
-        "templates": "Шаблоны",
-        "templates_editor": "Редактор шаблонов",
-        "textButton" :"Рассчитать",
-        "textAllButton": "Рассчитать по всем",
-        "diagButton": "Получить ТО по VIN"
     }
 }
