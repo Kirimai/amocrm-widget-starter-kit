@@ -9,7 +9,8 @@
         "login":"User login",
         "api_key":"API key",
         "account":"Account",
-        "field_vin":"Поле VIN"
+        "field_vin":"Поле VIN",
+        "field_plate":"Поле Гос номера"
     },
     "advanced":{
         "title":"Settings menu item title"

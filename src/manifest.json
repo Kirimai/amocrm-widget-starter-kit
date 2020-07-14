@@ -1,11 +1,12 @@
 {
   "widget": {
     "name": "widget.name",
+    "code": "tag_osago",
     "description": "widget.description",
     "short_description": "widget.short_description",
-    "version": "1.0.47",
+    "version": "1.0.95",
     "interface_version": 2,
-    "init_once": true,
+    "init_once": false,
     "locale": [
       "ru",
       "en"
@@ -50,6 +51,16 @@
     },
     "account": {
       "name": "settings.account",
+      "type": "text",
+      "required": true
+    },
+    "field_vin": {
+      "name": "settings.field_vin",
+      "type": "text",
+      "required": true
+    },
+    "field_plate": {
+      "name": "settings.field_plate",
       "type": "text",
       "required": true
     }

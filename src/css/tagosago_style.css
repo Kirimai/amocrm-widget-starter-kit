@@ -214,3 +214,8 @@
 	cursor: pointer;
 	height: 10px;
 }
+
+button#tagosago_get_diagbtn {
+    margin: 5px 0;
+    width: 100%;
+}

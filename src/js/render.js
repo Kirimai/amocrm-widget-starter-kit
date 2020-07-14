@@ -13,7 +13,7 @@ window.tagosagoru.render.push(
 			is_area = false,
 			tpls = [];
 
-		// self.prepare_settings();
+		self.prepare_settings();
 
 		var lists = settings.lists ? self.object2array(settings.lists) : [{daytime: 0, delayed: 0}];
 		if(lists[0].delayed == '1'){

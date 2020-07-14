@@ -309,43 +309,57 @@ window.tagosagoru.bind_actions.push(
 		$(document).off('click', '#tagosago_get_diagbtn').on('click', '#tagosago_get_diagbtn', function(){
 			$(this).attr('disabled');
 			self.getTemplate('loading', function(template) {
-                $('#tagosago_get_diagbtn').after(
-                    template.render({
-                            id: 'to_loading'
-                        }
-                    )
-                )
-            });
+				$('#tagosago_get_diagbtn').after(
+					template.render({
+							id: 'to_loading'
+						}
+					)
+				)
+			});
 			self.crm_post(
-			    'https://tag-osago.ru/to/search',
-			    {
+				'https://tag-osago.ru/to/search',
+				{
 					'_element': 'data',
 					'_action': 'tosearch',
 					'json' : 'true',
 					'car_vin': window.tagosagoru.card.vin
 				},
-			    function (msg) {
-			        console.log(msg);
-			        $('#to_list').html('');
+				function (msg) {
+					console.log(msg);
+					$('#to_list').html('');
 
-			        self.getTemplate('tagosago_diags', function(template) {
-                        $('#to_list').append(
-                            template.render({
-                                    id: 'tagosago_diags',
-                                    items: msg
-                                }
-                            )
-                        )
-                    });
-                    $('#to_loading').remove();
-			    },
-			    'json',
-			    function () {
-			    	$('#to_list').html('');
-			    	$('#to_loading').remove();
-			    	$(this).removeAttr('disabled');
-			        console.log('Error');
-			    }
+					if ( !msg.error ) {
+
+						self.getTemplate('tagosago_diags', function(template) {
+							$('#to_list').append(
+								template.render({
+										id: 'tagosago_diags',
+										items: msg
+									}
+								)
+							)
+						});
+					} else {
+
+						self.getTemplate('tagosago_diags_404', function(template) {
+							$('#to_list').append(
+								template.render({
+										id: 'tagosago_diags'
+									}
+								)
+							)
+						});
+					}
+
+					$('#to_loading').remove();
+				},
+				'json',
+				function () {
+					$('#to_list').html('');
+					$('#to_loading').remove();
+					$(this).removeAttr('disabled');
+					console.log('Error');
+				}
 			);
 		});
 
