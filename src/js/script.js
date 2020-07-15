@@ -15,6 +15,7 @@ window.tagosagoru.customers = [];
 window.tagosagoru.leads = [];
 window.tagosagoru.tasks = [];
 window.tagosagoru.card = [];
+window.tagosagoru.calculate_data = [];
 
 window.tagosagoru.execute = function(event, widget){
 	var result = true;
@@ -70,7 +71,7 @@ define([
 			version = '0.0.2',
 			area = AMOCRM.getWidgetsArea(),
 			twig = require('twigjs'),
-			cd = new Date;
+			cd = new Date();
 
 		// var Modal = require('lib/components/base/modal');
 
@@ -109,7 +110,7 @@ define([
 
 			var lists = settings.lists ? self.object2array(settings.lists) : [];
 
-			if(lists.length == 0){
+			if(lists.length === 0){
 				self.save_all_settings(settings, [
 					{delayed: 0},
 					{daytime: 0}
@@ -141,6 +142,7 @@ define([
 					}
 				}),
 				success: function (data) {
+					return data;
 				}
 			});
 
@@ -338,20 +340,95 @@ define([
 			return i;
 		};
 
+		this.getContactList = function () {
+			var area = self.system().area;
+			var $selector,
+				contacts_collection = [],
+				selected_phones = [];
+			if ($.inArray(area, ['ccard', 'comcard', 'lcard', 'cucard']) != -1) {
+				$selector = $('[data-pei-code=phone] input[type=text]');
+				$selector.each(function () {
+					if ($(this).val().trim().match(/^\+?(?:[- ()]*\d[- ()]*){10,15}$/) &&
+						$.inArray($(this).val().replace(/[^0-9]/ig, ""), selected_phones) === -1) {
+						selected_phones.push($(this).val().replace(/[^0-9]/ig, ""));
+						contacts_collection.push({
+							id: $(this).val(),
+							text: $(this).val()
+						});
+					}
+				});
+			}
 
-		this.get_vincode = function() {
+			return contacts_collection;
+		};
+
+		this.get_settings_field_id = function(fieldname,self) {
 			var area = self.system().area;
 
 			if ($.inArray(area, ['lcard', 'llist']) != -1) {
 				window.tagosagoru.card.vin = false;
-
-				// self.get_settings().field_vin;
-
-				if (AMOCRM.data.current_card.model.attributes["CFV[410133]"]) {
-					window.tagosagoru.card.vin =  AMOCRM.data.current_card.model.attributes["CFV[410133]"];
+				settings = self.get_settings();
+				settings_val = settings[fieldname];
+				settings_field_id = settings_val.replace(/\{|\}|(\.cf\.)|(leads)|(contacts)/g, '');
+				settings_field_id = parseInt(settings_field_id);
+				var is_contact = (settings_val.includes("contacts") ? true : false);
+				var is_lead = (settings_val.includes("leads") ? true : false);
+				if (is_lead) {
+					if ( settings_field_id ) {
+						result = $('[name="CFV['+settings_field_id+']"]').val();
+					} else {
+						result = $('[name="CFV['+settings_field_id+']"]').val();
+					}
+					window.tagosagoru.calculate_data[fieldname] = result;
+					return window.tagosagoru.calculate_data[fieldname];
 				}
-			   // var temp_html = self.render_select('tagosago_templates', tagosago_templates, '-2', '', 'tagosago_templates');
-				$('#vincode').html('VIN: '+window.tagosagoru.card.vin);
+				if (is_contact) {
+					if ( settings_field_id ) {
+						$('[name="CFV['+settings_field_id+']"]').each(function(index, item) {
+							window.tagosagoru.calculate_data['contacts'][index][fieldname] = $(item).val();
+						});
+					} else {
+						$('[name="CFV['+settings_field_id+']"]').each(function(index, item) {
+							window.tagosagoru.calculate_data['contacts'][index][fieldname] = $(item).val();
+						});
+					}
+					return window.tagosagoru.calculate_data['contacts'][0][fieldname] = $(item).val();
+				}
+			}
+		}
+
+		this.set_settings_field_id = function(fieldname, newval, self) {
+			var area = self.system().area;
+
+			if ($.inArray(area, ['lcard', 'llist']) != -1) {
+				window.tagosagoru.card.vin = false;
+				settings = self.get_settings();
+				settings_val = settings[fieldname];
+				settings_field_id = settings_val.replace(/\{|\}|(\.cf\.)|(leads)|(contacts)/g, '');
+				settings_field_id = parseInt(settings_field_id);
+				var is_contact = (settings_val.includes("contacts") ? true : false);
+				var is_lead = (settings_val.includes("leads") ? true : false);
+				if (is_lead) {
+					if ( settings_field_id ) {
+						result = $('[name="CFV['+settings_field_id+']"]').val(newval).trigger('change');
+					} else {
+						result = $('[name="CFV['+settings_field_id+']"]').val(newval).trigger('change');
+					}
+					window.tagosagoru.calculate_data[fieldname] = result;
+					return window.tagosagoru.calculate_data[fieldname];
+				}
+				if (is_contact) {
+					if ( settings_field_id ) {
+						$('[name="CFV['+settings_field_id+']"]').each(function(index, item) {
+							window.tagosagoru.calculate_data['contacts'][index][fieldname] = $(item).val(newval).trigger('change');
+						});
+					} else {
+						$('[name="CFV['+settings_field_id+']"]').each(function(index, item) {
+							window.tagosagoru.calculate_data['contacts'][index][fieldname] = $(item).val(newval).trigger('change');
+						});
+					}
+					return window.tagosagoru.calculate_data['contacts'][0][fieldname] = $(item).val(newval).trigger('change');
+				}
 			}
 		}
 

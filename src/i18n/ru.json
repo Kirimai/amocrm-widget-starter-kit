@@ -39,6 +39,8 @@
         "templates_editor": "Редактор шаблонов",
         "textButton" :"Рассчитать",
         "textAllButton": "Рассчитать по всем",
-        "diagButton": "Получить ТО по VIN"
+        "diagButton_pretext": "Найти ТО",
+        "diagButton_vin": "по VIN",
+        "diagButton_plate": "по Г.Н"
     }
 }

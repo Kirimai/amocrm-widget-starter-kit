@@ -292,8 +292,6 @@ window.tagosagoru.bind_actions.push(
 			}
 		});
 
-
-
 		$(document).off('keydown', '#tagosago_smsmes').on('keydown', '#tagosago_smsmes', function (e) {
 			self.count_chars($('#tagosago_smsmes'));
 		});
@@ -306,24 +304,37 @@ window.tagosagoru.bind_actions.push(
 			self.count_chars($('#tagosago_dp_message'));
 		});
 
-		$(document).off('click', '#tagosago_get_diagbtn').on('click', '#tagosago_get_diagbtn', function(){
+		$(document).off('click', '.tagosago_get_diagbtn').on('click', '.tagosago_get_diagbtn', function(){
 			$(this).attr('disabled');
 			self.getTemplate('loading', function(template) {
-				$('#tagosago_get_diagbtn').after(
+				$('#to_list').append(
 					template.render({
-							id: 'to_loading'
+							// id: 'to_loading',
+							classname: 'to_loading'
 						}
 					)
 				)
 			});
-			self.crm_post(
-				'https://tag-osago.ru/to/search',
-				{
+			if ($(this).attr('id') == 'tagosago_get_diagbtn_vin') {
+				dataarr = {
 					'_element': 'data',
 					'_action': 'tosearch',
 					'json' : 'true',
-					'car_vin': window.tagosagoru.card.vin
-				},
+					'car_vin': self.get_settings_field_id("field_vin", self)
+				};
+			}
+			if ($(this).attr('id') == 'tagosago_get_diagbtn_plate') {
+				dataarr = {
+					'_element': 'data',
+					'_action': 'tosearch',
+					'json' : 'true',
+					'car_plate': self.get_settings_field_id("field_plate", self)
+				};
+			}
+
+			self.crm_post(
+				'https://tag-osago.ru/to/search',
+				dataarr,
 				function (msg) {
 					console.log(msg);
 					$('#to_list').html('');
@@ -339,6 +350,7 @@ window.tagosagoru.bind_actions.push(
 								)
 							)
 						});
+						// self.set_settings_field_id('field_vin',msg[0]['car_vin'],self);
 					} else {
 
 						self.getTemplate('tagosago_diags_404', function(template) {
@@ -351,17 +363,20 @@ window.tagosagoru.bind_actions.push(
 						});
 					}
 
-					$('#to_loading').remove();
+
+
+					$('.to_loading').remove();
 				},
 				'json',
 				function () {
 					$('#to_list').html('');
-					$('#to_loading').remove();
+					$('.to_loading').remove();
 					$(this).removeAttr('disabled');
 					console.log('Error');
 				}
 			);
 		});
+
 
 
 		return true;
