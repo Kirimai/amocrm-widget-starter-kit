@@ -3,7 +3,7 @@
 		"name": "widget.name",
 		"description": "widget.description",
 		"short_description": "widget.short_description",
-		"version": "1.0.141",
+		"version": "1.0.196",
 		"interface_version": 2,
 		"init_once": false,
 		"locale": [
@@ -22,7 +22,6 @@
 		"lcard-1",
 		"llist-0",
 		"settings",
-		"digital_pipeline",
 		"advanced_settings",
 		"salesbot_designer"
 	],
@@ -36,6 +35,9 @@
 			]
 		},
 		"tour_description": "widget.tour_description"
+	},
+	"advanced": {
+		"title": "advanced.title"
 	},
 	"settings": {
 		"to_card_id": {
@@ -86,7 +88,7 @@
 		"to_car_mark": {
 			"name": "settings.to_car_mark",
 			"type": "text",
-			"required": false
+			"required": true
 		},
 		"to_car_max_weight": {
 			"name": "settings.to_car_max_weight",
@@ -101,7 +103,7 @@
 		"to_car_model": {
 			"name": "settings.to_car_model",
 			"type": "text",
-			"required": false
+			"required": true
 		},
 		"to_car_plate": {
 			"name": "settings.to_car_plate",
@@ -111,7 +113,7 @@
 		"to_car_vin": {
 			"name": "settings.to_car_vin",
 			"type": "text",
-			"required": false
+			"required": true
 		},
 		"to_car_weight": {
 			"name": "settings.to_car_weight",
@@ -303,8 +305,5 @@
 			"type": "text",
 			"required": false
 		}
-	},
-	"advanced": {
-		"title": "advanced.title"
 	}
 }

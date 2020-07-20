@@ -17,7 +17,7 @@
 					</a>
 				</div>
 				<div class="pipeline_leads__row">
-					<div class="pipeline_leads__field">VIN: {{ item.vin}}</div>
+					<div class="pipeline_leads__field tagosago_dk_pop" data-cardnum="{{ item.num}}">VIN: {{ item.vin}} [{{item.car_plate}}]</div>
 				</div>
 				<div class="pipeline_leads__middle-block">
 					<span class="pipeline_leads__note pipeline_leads__grey h-text-overflow" title="Шины: {{ item.tire}}">Пробег: {{ item.mileage}}</span>
@@ -44,6 +44,72 @@
 					</div>
 				</label>
 			</div>
+		</div>
+		<div id="card_{{ item.num}}" class="hidden">
+
+			<div id="opened_diag_num">{{item.num}}</div>
+			<div id="opened_diag_price">{{item.price}}</div>
+			<div id="opened_diag_status">{{item.status}}</div>
+			<div id="opened_diag_expires">{{item.expires}}</div>
+			<div id="opened_diag_vin">{{item.vin}}</div>
+			<div id="opened_diag_save">{{item.save}}</div>
+			<div id="opened_diag_mileage">{{item.mileage}}</div>
+			<div id="opened_diag_tire">{{item.tire}}</div>
+			<div id="opened_diag_print">{{item.print}}</div>
+			
+			<div id="to_card_id">{{item.card_id}}</div>
+			<div id="to_car_body">{{item.car_body}}</div>
+			<div id="to_car_document_date">{{item.car_document_date}}</div>
+			<div id="to_car_document_id">{{item.car_document_id}}</div>
+			<div id="to_car_document_organization">{{item.car_document_organization}}</div>
+			<div id="to_car_document_series">{{item.car_document_series}}</div>
+			<div id="to_car_document_type_regtalon">{{item.car_document_type_regtalon}}</div>
+			<div id="to_sended_to_eaisto">{{item.sended_to_eaisto}}</div>
+			<div id="to_car_frame">{{item.car_frame}}</div>
+			<div id="to_car_mark">{{item.car_mark}}</div>
+			<div id="to_car_max_weight">{{item.car_max_weight}}</div>
+			<div id="to_car_mileage">{{item.car_mileage}}</div>
+			<div id="to_car_model">{{item.car_model}}</div>
+			<div id="to_car_plate">{{item.car_plate}}</div>
+			<div id="to_car_vin">{{item.car_vin}}</div>
+			<div id="to_car_weight">{{item.car_weight}}</div>
+			<div id="to_car_year">{{item.car_year}}</div>
+			<div id="to_card_comment">{{item.card_comment}}</div>
+			<div id="to_card_expires">{{item.card_expires}}</div>
+			<div id="to_card_insurance_cost">{{item.card_insurance_cost}}</div>
+			<div id="to_card_number">{{item.card_number}}</div>
+			<div id="to_card_price">{{item.card_price}}</div>
+			<div id="to_checkout_status">{{item.checkout_status}}</div>
+			<div id="to_first_name">{{item.first_name}}</div>
+			<div id="to_last_name">{{item.last_name}}</div>
+			<div id="to_middle_name">{{item.middle_name}}</div>
+			<div id="to_send_data">{{item.send_data}}</div>
+			<div id="to_save_data">{{item.save_data}}</div>
+			<div id="to_tire_brand">{{item.tire_brand}}</div>
+			<div id="to_author_id">{{item.author_id}}</div>
+			<div id="to_fuel_id">{{item.fuel_id}}</div>
+			<div id="to_car_type_two_id">{{item.car_type_two_id}}</div>
+			<div id="to_car_type_id">{{item.car_type_id}}</div>
+			<div id="to_brakes_id">{{item.brakes_id}}</div>
+			<div id="to_expert_id">{{item.expert_id}}</div>
+			<div id="to_inspect_point_id">{{item.inspect_point_id}}</div>
+			<div id="to_eaisto_id">{{item.eaisto_id}}</div>
+			<div id="to_phone">{{item.phone}}</div>
+			<div id="to_client_id">{{item.client_id}}</div>
+			<div id="to_company_id">{{item.company_id}}</div>
+			<div id="to_note">{{item.note}}</div>
+			<div id="to_pay_by_terminal">{{item.pay_by_terminal}}</div>
+			<div id="to_office_id">{{item.office_id}}</div>
+			<div id="to_tachograph_serial_number">{{item.tachograph_serial_number}}</div>
+			<div id="to_for_six_months">{{item.for_six_months}}</div>
+			<div id="to_engine_type_id">{{item.engine_type_id}}</div>
+			<div id="to_legal_entity_id">{{item.legal_entity_id}}</div>
+			<div id="to_tachograph_model">{{item.tachograph_model}}</div>
+			<div id="to_tachograph_brand">{{item.tachograph_brand}}</div>
+			<div id="to_danger">{{item.danger}}</div>
+			<div id="to_taxi">{{item.taxi}}</div>
+			<div id="to_spec">{{item.spec}}</div>
+			<div id="to_studying">{{item.studying}}</div>
 		</div>
     {% endfor %}
 </div>

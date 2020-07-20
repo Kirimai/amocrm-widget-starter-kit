@@ -304,6 +304,109 @@ window.tagosagoru.bind_actions.push(
 			self.count_chars($('#tagosago_dp_message'));
 		});
 
+		$(document).off('click', '.tagosago_dk_pop').on('click', '.tagosago_dk_pop', function (e) {
+			var Modal = require('lib/components/base/modal');
+			new Modal({
+	             // собственный класс для модального окна,
+	             // если нужно в нем поменять какие-то стили
+	             class_name: 'tagosago_dk_pop__modal',
+
+	             // метод, отрабатывающий при
+	             // готовности модального окна
+	             // получает в параметр jQuery-объект $modal_body
+	             // тела модального окна, все внутренности
+	             // окна будут в нем
+	             init: function($modal_body) {
+	             	data = $('#card_' + e.target.attributes[1].nodeValue );
+
+					var childs = $(data).children();
+					var remote = [],
+						local = [],
+						different = [];
+					var print_data = '';
+
+
+
+					for (var i = 1; i < childs.length - 1; i++)
+					{
+						fieldname = $(childs[i]).attr('id');
+						rem_val = $(childs[i]).text();
+						loc_val = self.get_settings_field_id( fieldname );
+
+						remote[fieldname] = rem_val;
+						local[ fieldname ] = loc_val;
+
+						if ( rem_val == loc_val) {
+							different[ fieldname ] = false;
+						} else {
+							different[ fieldname ] = [];
+							different[ fieldname ]['local'] = loc_val;
+							different[ fieldname ]['remote'] = rem_val;
+							print_data = self.render_different_tofield(fieldname, loc_val, rem_val);
+						}
+						// console.log('local '+fieldname+' = '+local[ fieldname ] );
+					}
+					console.log(remote);
+					console.log(local);
+					console.log(different);
+
+					
+
+					// a, b - массивы ваши
+		
+
+					// console.log(remote);
+					// different
+					// html = 
+
+						
+	        		$modal_body
+						.trigger('modal:loaded')
+						.html(print_data)
+						.trigger('modal:centrify')
+						.append('<span class="modal-body__close"><span class="icon icon-modal-close"></span></span>');
+
+	             },
+
+	             // кастомный `destroy`, может вернуть `false`,
+	             // тогда закрытия окна не произойдет
+	             destroy: _.noop,
+
+	             // контейнер, куда попадет
+	             // модальное окно и относительно
+	             // какого элемента будет центрироваться
+	             container: document.body,
+
+	             // если нужно запретить закрытие модального окна
+	             // по клику на оверлэе, просто передаем в options
+	             // `disable_overlay_click`
+	             disable_overlay_click: false,
+
+	             // если нужно запретить закрытие модального окна
+	             // по нажатию на escape
+	             disable_escape_keydown: false,
+
+	             // если нужно запретить дефолтную обработку enter
+	             disable_enter_keydown: false,
+
+	             // параметр отвечает за анимацию всплывания
+	             // модального окна, если передать `true`,
+	             // то оно запустится с анимацией увеличения и появления
+	             init_animation: false,
+
+	             // по умолчанию оверлей у модалок белый,
+	             // изменить если нужен темный оверлей
+	             default_overlay: false,
+
+	             // элемент, который получает фокус,
+	             // по умолчанию это кнопка акцепта. нужен для того,
+	             // чтобы снимать фокус с кнопки вызвавшей событие
+	             focus_element: '.js-modal-accept',
+	        });
+	        
+		});
+
+
 		$(document).off('click', '.tagosago_get_diagbtn').on('click', '.tagosago_get_diagbtn', function(){
 			$(this).attr('disabled');
 			self.getTemplate('loading', function(template) {

@@ -16,6 +16,7 @@ window.tagosagoru.leads = [];
 window.tagosagoru.tasks = [];
 window.tagosagoru.card = [];
 window.tagosagoru.settings = [];
+window.tagosagoru.advanced_settings = [];
 window.tagosagoru.macros = [];
 window.tagosagoru.calculate_data = [];
 
@@ -28,6 +29,7 @@ window.tagosagoru.execute = function(event, widget){
 	}
 	return result;
 };
+
 
 /*define([
 	'jquery',
@@ -57,6 +59,7 @@ define([
 	'./plugins/select2.min.js',
 	'jquery-ui',
 	'./js/settings.js?' + Date.now(),
+	'./js/advanced_settings.js?' + Date.now(),
 	'./js/bind_actions.js?' + Date.now(),
 	'./js/dpSettings.js?' + Date.now(),
 	'./js/render.js?' + Date.now(),
@@ -65,7 +68,7 @@ define([
 	'./js/customers.js?' + Date.now(),
 	'./js/leads.js?' + Date.now()
 
-	], function ($, _, Twig) {
+	], function ($, _, Twig, Modal) {
 
 	var CustomWidget = function () {
 		var self = this,
@@ -321,6 +324,25 @@ define([
 			});
 		};
 
+		this.render_different_tofield = function(fieldname, loc_val, rem_val) {
+			// return twig({
+			// 	ref: '/templates/different_tofield.twig'
+			// }).render({
+			// 	fieldname: fieldname, 
+			// 	loc_val: loc_val, 
+			// 	rem_val: rem_val
+			// });
+			return self.render({
+				href: '/templates/different_tofield.twig',
+				base_path: self.params.path,
+				load: function(){}
+			}, {
+				fieldname: fieldname, 
+				loc_val: loc_val, 
+				rem_val: rem_val
+			});
+		};
+
 		this.date_field = function(id, class_name) {
 			return twig({
 				ref: '/tmpl/controls/date_field.twig'
@@ -369,13 +391,15 @@ define([
 			return contacts_collection;
 		};
 
-		this.get_settings_field_id = function(fieldname,self) {
+		this.get_settings_field_id = function(fieldname) {
+			if (!fieldname) return false;
 			var area = self.system().area;
-
+			// console.log('gettin '+fieldname+"'s value");
 			if ($.inArray(area, ['lcard', 'llist']) != -1) {
 				window.tagosagoru.card.vin = false;
 				settings = self.get_settings();
 				settings_val = settings[fieldname];
+				if (!settings_val) return false;
 				settings_field_id = settings_val.replace(/\{|\}|(\.cf\.)|(leads)|(contacts)/g, '');
 				settings_field_id = parseInt(settings_field_id);
 				var is_contact = (settings_val.includes("contacts") ? true : false);
@@ -390,21 +414,39 @@ define([
 					return window.tagosagoru.calculate_data[fieldname];
 				}
 				if (is_contact) {
+					
+
 					if ( settings_field_id ) {
-						$('[name="CFV['+settings_field_id+']"]').each(function(index, item) {
-							window.tagosagoru.calculate_data['contacts'][index][fieldname] = $(item).val();
-						});
+						$('[name="CFV['+settings_field_id+']"]').each(
+							function(index, item) {
+								if ( $(item).val() ) {
+									current_val = $(item).val();
+									window.tagosagoru.calculate_data['contacts'][index][fieldname] = current_val;
+								} else {
+									return false;
+								}
+							}
+						);
 					} else {
 						$('[name="CFV['+settings_field_id+']"]').each(function(index, item) {
-							window.tagosagoru.calculate_data['contacts'][index][fieldname] = $(item).val();
+							if ( $(item).val() ) {
+								current_val = $(item).val();
+								window.tagosagoru.calculate_data['contacts'][index][fieldname] = current_val;
+							} else {
+								return false;
+							}
 						});
 					}
-					return window.tagosagoru.calculate_data['contacts'][0][fieldname] = $(item).val();
+					if (window.tagosagoru.calculate_data['contacts'] && window.tagosagoru.calculate_data['contacts'][0][fieldname]) {
+						return window.tagosagoru.calculate_data['contacts'][0][fieldname];
+					} else {
+						return false;
+					}
 				}
 			}
 		}
 
-		this.set_settings_field_id = function(fieldname, newval, self) {
+		this.set_settings_field_id = function(fieldname, newval) {
 			var area = self.system().area;
 
 			if ($.inArray(area, ['lcard', 'llist']) != -1) {
@@ -441,14 +483,14 @@ define([
 
 		this.settings_cf = function(fieldname) {
 
-			// self.set_macros_names();
-			// settings = self.get_settings();
+			self.set_macros_names();
+			settings = self.get_settings();
 
 			// while	(settings != true ) {
 			// 	settings = self.get_settings();
 			// }
 
-			/*
+			
 			if (!settings || !settings.select_leads_cf) {
 				settings.select_leads_cf = self.params.leads_macros;
 				settings.select_leads_cf = settings.select_leads_cf.map( function( val, i ) {
@@ -471,21 +513,23 @@ define([
 				});
 			}
 
-			vinselect_lead = self.render_select(fieldname+'_select_lead', settings.select_leads_cf, $('input[name="'+fieldname+'"]').val(), fieldname+'_select_class', fieldname+'_select_lead');
+			vinselect_lead = self.render_select(fieldname+'_select_lead', settings.select_leads_cf, $('input[name="'+fieldname+'"]').val(), fieldname+'_select_class dopfield', fieldname+'_select_lead');
 			$('input[name="'+fieldname+'"]').after(vinselect_lead);
+			$('input[name="'+fieldname+'"]').after('<div>Сделка:</div>');
 			$('#'+fieldname+'_select_lead').on('change', function(event) {
 				$('input[name="'+fieldname+'"]').val( event.currentTarget.value );
 				$('input[name="'+fieldname+'"]').trigger ( 'change' ) ;
 			});
 
-			vinselect_contact = self.render_select(fieldname+'_select_contact', settings.select_contacts_cf, $('input[name="'+fieldname+'"]').val(), fieldname+'_select_class', fieldname+'_select_contact');
+			vinselect_contact = self.render_select(fieldname+'_select_contact', settings.select_contacts_cf, $('input[name="'+fieldname+'"]').val(), fieldname+'_select_class dopfield', fieldname+'_select_contact');
 			$('input[name="'+fieldname+'"]').after(vinselect_contact);
+			$('input[name="'+fieldname+'"]').after('<div>Контакт:</div>');
 			$('#'+fieldname+'_select_contact').on('change', function(event) {
 				$('input[name="'+fieldname+'"]').val( event.currentTarget.value );
 				$('input[name="'+fieldname+'"]').trigger ( 'change' ) ;
 			});
-			*/
-			$('input[name="'+fieldname+'"]').after('<div>'+fieldname+'</div>');
+			
+			
 		}
 
 		this.get_templates = function() {
@@ -573,6 +617,9 @@ define([
 			},
 			settings: function(){
 				return window.tagosagoru.execute('settings', self);
+			},
+			advancedSettings: function() {
+				return window.tagosagoru.execute('advanced_settings', self);
 			},
 			onSave: function(){
 				return window.tagosagoru.execute('onSave', self);
