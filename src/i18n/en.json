@@ -6,11 +6,59 @@
         "tour_description":"Tour description"
     },
     "settings":{
-        "login":"User login",
-        "api_key":"API key",
-        "account":"Account",
-        "field_vin":"Поле VIN",
-        "field_plate":"Поле Гос номера"
+        "to_card_id": "Поле card_id",
+        "to_car_body": "Поле car_body",
+        "to_car_document_date": "Поле car_document_date",
+        "to_car_document_id": "Поле car_document_id",
+        "to_car_document_organization": "Поле car_document_organization",
+        "to_car_document_series": "Поле car_document_series",
+        "to_car_document_type_regtalon": "Поле car_document_type_regtalon",
+        "to_sended_to_eaisto": "Поле sended_to_eaisto",
+        "to_car_frame": "Поле car_frame",
+        "to_car_mark": "Поле car_mark",
+        "to_car_max_weight": "Поле Максимальная масса",
+        "to_car_mileage": "Поле Пробег",
+        "to_car_model": "Поле Модель",
+        "to_car_plate": "Поле Гос Номер",
+        "to_car_vin": "Поле VIN",
+        "to_car_weight": "Поле car_weight",
+        "to_car_year": "Поле год выпуска авто",
+        "to_card_comment": "Поле комментарий",
+        "to_card_expires": "Поле card_expires",
+        "to_card_insurance_cost": "Поле card_insurance_cost",
+        "to_card_number": "Поле card_number",
+        "to_card_price": "Поле card_price",
+        "to_checkout_status": "Поле checkout_status",
+        "to_first_name": "Поле first_name",
+        "to_last_name": "Поле last_name",
+        "to_middle_name": "Поле middle_name",
+        "to_send_data": "Поле send_data",
+        "to_save_data": "Поле save_data",
+        "to_tire_brand": "Поле tire_brand",
+        "to_author_id": "Поле author_id",
+        "to_fuel_id": "Поле fuel_id",
+        "to_car_type_two_id": "Поле car_type_two_id",
+        "to_car_type_id": "Поле car_type_id",
+        "to_brakes_id": "Поле brakes_id",
+        "to_expert_id": "Поле expert_id",
+        "to_inspect_point_id": "Поле inspect_point_id",
+        "to_eaisto_id": "Поле eaisto_id",
+        "to_phone": "Поле phone",
+        "to_client_id": "Поле client_id",
+        "to_company_id": "Поле company_id",
+        "to_note": "Поле note",
+        "to_pay_by_terminal": "Поле pay_by_terminal",
+        "to_office_id": "Поле office_id",
+        "to_tachograph_serial_number": "Поле tachograph_serial_number",
+        "to_for_six_months": "Поле for_six_months",
+        "to_engine_type_id": "Поле engine_type_id",
+        "to_legal_entity_id": "Поле legal_entity_id",
+        "to_tachograph_model": "Поле tachograph_model",
+        "to_tachograph_brand": "Поле tachograph_brand",
+        "to_danger": "Поле danger",
+        "to_taxi": "Поле taxi",
+        "to_spec": "Поле spec",
+        "to_studying": "Поле studying"
     },
     "advanced":{
         "title":"Settings menu item title"
@@ -32,7 +80,7 @@
 
     },
     "tagosago_edit_templates": {
-        
+
     },
     "userLang": {
         "templates": "Шаблоны",
@@ -42,5 +90,6 @@
         "diagButton_pretext": "Найти ТО",
         "diagButton_vin": "Найти ТО по VIN",
         "diagButton_plate": "Найти ТО по Г.Н"
+
     }
 }

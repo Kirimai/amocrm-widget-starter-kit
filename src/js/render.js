@@ -13,7 +13,7 @@ window.tagosagoru.render.push(
 			is_area = false,
 			tpls = [];
 
-		self.prepare_settings();
+		// self.prepare_settings();
 		window.tagosagoru.calculate_data = [];
 
 		var lists = settings.lists ? self.object2array(settings.lists) : [{daytime: 0, delayed: 0}];
@@ -97,7 +97,7 @@ window.tagosagoru.render.push(
 					button: self.render_button('', lang.textButton, '', 'tagosago_sendbtn', false),
 					diagbutton_vin: self.render_button('', lang.diagButton_vin, 'tagosago_get_diagbtn', 'tagosago_get_diagbtn_vin', false),
 					diagbutton_plate: self.render_button('', lang.diagButton_plate, 'tagosago_get_diagbtn', 'tagosago_get_diagbtn_plate', false),
-					all_contact: self.render_button('', lang.textAllButton, '', 'tagosago_get_all_contact', false),
+					// all_contact: self.render_button('', lang.textAllButton, '', 'tagosago_get_all_contact', false),
 					is_area: is_area,
 					lang: {
 						date: lang.date,
@@ -116,10 +116,10 @@ window.tagosagoru.render.push(
 			// if(templates){
 			// 	self.build_templates(templates);
 			// }
-			var templates = self.get_templates();
-			if(templates){
-				self.build_templates(templates);
-			}
+			// var templates = self.get_templates();
+			// if(templates){
+			// 	self.build_templates(templates);
+			// }
 			// var senders = self.get_senders();
 			// if(senders){
 			// 	self.build_senders(senders);

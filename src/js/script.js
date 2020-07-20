@@ -15,6 +15,8 @@ window.tagosagoru.customers = [];
 window.tagosagoru.leads = [];
 window.tagosagoru.tasks = [];
 window.tagosagoru.card = [];
+window.tagosagoru.settings = [];
+window.tagosagoru.macros = [];
 window.tagosagoru.calculate_data = [];
 
 window.tagosagoru.execute = function(event, widget){
@@ -68,7 +70,7 @@ define([
 	var CustomWidget = function () {
 		var self = this,
 			system = self.system,
-			version = '0.0.2',
+			version = '0.0.3',
 			area = AMOCRM.getWidgetsArea(),
 			twig = require('twigjs'),
 			cd = new Date();
@@ -80,9 +82,9 @@ define([
 			contacts: [],
 		};
 
+
 		this.getTemplate = function (template, callback) {
 			template = template || '';
-
 			return self.render({
 				href: '/templates/' + template + '.twig',
 				base_path: self.params.path,
@@ -105,51 +107,51 @@ define([
 			}, {});
 		};
 
-		this.prepare_settings = function() {
-			var settings = self.get_settings();
+		// this.prepare_settings = function() {
+		// 	var settings = self.get_settings();
 
-			var lists = settings.lists ? self.object2array(settings.lists) : [];
+		// 	var lists = settings.lists ? self.object2array(settings.lists) : [];
 
-			if(lists.length === 0){
-				self.save_all_settings(settings, [
-					{delayed: 0},
-					{daytime: 0}
-				]);
-			}
-		};
+		// 	if(lists.length === 0){
+		// 		self.save_all_settings(settings, [
+		// 			{delayed: 0},
+		// 			{daytime: 0}
+		// 		]);
+		// 	}
+		// };
 
-		this.save_all_settings = function (settings, o) {
-			var obj = JSON.stringify(self.array2object(o));
+		// this.save_all_settings = function (settings, o) {
+		// 	var obj = JSON.stringify(self.array2object(o));
 
-			var savedata = [{
-				'widget_code': settings.widget_code,
-				'settings': {
-					'api_key': settings.api_key,
-					'lists': obj
-				}
-			}];
+		// 	var savedata = [{
+		// 		'widget_code': settings.widget_code,
+		// 		'settings': {
+		// 			'api_key': settings.api_key,
+		// 			'lists': obj
+		// 		}
+		// 	}];
 
 
-			$.ajax({
-				type: 'POST',
-				dataType: 'json',
-				url: '/private/api/v2/json/widgets/set',
-				data: JSON.stringify({
-					'request': {
-						'widgets': {
-							'install': savedata
-						}
-					}
-				}),
-				success: function (data) {
-					return data;
-				}
-			});
+		// 	$.ajax({
+		// 		type: 'POST',
+		// 		dataType: 'json',
+		// 		url: '/private/api/v2/json/widgets/set',
+		// 		data: JSON.stringify({
+		// 			'request': {
+		// 				'widgets': {
+		// 					'install': savedata
+		// 				}
+		// 			}
+		// 		}),
+		// 		success: function (data) {
+		// 			return data;
+		// 		}
+		// 	});
 
-			self.set_settings({lists: o});
+		// 	self.set_settings({lists: o});
 
-			AMOCRM.widgets.clear_cache();
-		};
+		// 	AMOCRM.widgets.clear_cache();
+		// };
 
 		this.create_macros_names = function (entity_type, entity_fields) {
 			var lang = self.i18n('userLang'),
@@ -185,71 +187,76 @@ define([
 		};
 
 		this.set_macros_names = function () {
-			$.ajax({
-				type: 'GET',
-				url: '/private/api/v2/json/accounts/current',
-				dataType: 'json',
-				success: function (data) {
-					var macroses = [], field, cf = data.response.account.custom_fields;
+			// if (!window.tagosagoru.macroses_set) {
 
-					for (field in cf) {
-						switch (field) {
-							case 'companies':
-								macroses[0] = [{
-									macros: '{{company_name}}',
-									title: self.i18n('userLang').macrosTitle
-								}];
-								macroses[0] = macroses[0].concat(self.create_macros_names(field, cf[field]));
-								break;
-							case 'contacts':
-								macroses[1] = [{
-									macros: '{{contact_name}}',
-									title: self.i18n('userLang').macrosTitle
-								}];
-								macroses[1] = macroses[1].concat(self.create_macros_names(field, cf[field]));
-								break;
-							case 'leads':
-								macroses[2] = [
-									{
-										macros: '{{lead_name}}',
+				$.ajax({
+					type: 'GET',
+					url: '/private/api/v2/json/accounts/current',
+					dataType: 'json',
+					success: function (data) {
+						var macroses = [], field, cf = data.response.account.custom_fields;
+
+						for (field in cf) {
+							switch (field) {
+								case 'companies':
+									macroses[0] = [{
+										macros: '{{company_name}}',
 										title: self.i18n('userLang').macrosTitle
-									},
-									{
-										macros: '{{leads.price}}',
-										title: self.i18n('userLang').macros_leads_price
-									}
-								];
-								macroses[2] = macroses[2].concat(self.create_macros_names(field, cf[field]));
-								break;
-							case 'customers':
-								macroses[3] = [
-									{
-										macros: '{{customer_name}}',
+									}];
+									macroses[0] = macroses[0].concat(self.create_macros_names(field, cf[field]));
+									break;
+								case 'contacts':
+									macroses[1] = [{
+										macros: '{{contact_name}}',
 										title: self.i18n('userLang').macrosTitle
-									},
-									{
-										macros: '{{customers.next_price}}',
-										title: self.i18n('userLang').macros_customers_next_price
-									},
-									{
-										macros: '{{customers.next_date}}',
-										title: self.i18n('userLang').macros_customers_next_date
-									}
-								];
-								macroses[3] = macroses[3].concat(self.create_macros_names(field, cf[field]));
-								break;
+									}];
+									macroses[1] = macroses[1].concat(self.create_macros_names(field, cf[field]));
+									break;
+								case 'leads':
+									macroses[2] = [
+										{
+											macros: '{{lead_name}}',
+											title: self.i18n('userLang').macrosTitle
+										},
+										{
+											macros: '{{leads.price}}',
+											title: self.i18n('userLang').macros_leads_price
+										}
+									];
+									macroses[2] = macroses[2].concat(self.create_macros_names(field, cf[field]));
+									break;
+								case 'customers':
+									macroses[3] = [
+										{
+											macros: '{{customer_name}}',
+											title: self.i18n('userLang').macrosTitle
+										},
+										{
+											macros: '{{customers.next_price}}',
+											title: self.i18n('userLang').macros_customers_next_price
+										},
+										{
+											macros: '{{customers.next_date}}',
+											title: self.i18n('userLang').macros_customers_next_date
+										}
+									];
+									macroses[3] = macroses[3].concat(self.create_macros_names(field, cf[field]));
+									break;
+							}
 						}
-					}
 
-					self.set_settings({
-						companies_macros: macroses[0],
-						contacts_macros: macroses[1],
-						leads_macros: macroses[2],
-						customers_macros: macroses[3],
-						account_users: data.response.account.users
-					});
-				}
-			});
+						self.set_settings({
+							companies_macros: macroses[0],
+							contacts_macros: macroses[1],
+							leads_macros: macroses[2],
+							customers_macros: macroses[3],
+							account_users: data.response.account.users
+						});
+						// window.tagosagoru.macroses_set = true;
+					}
+				});
+			// }
+			// return window.tagosagoru.macroses_set;
 		};
 
 		this.render_select = function(name, items, selected, class_name, id) {
@@ -432,12 +439,16 @@ define([
 			}
 		}
 
-		this.settings_cf = function(fieldname, self) {
-			settings = self.get_settings();
-			if (!settings || !settings.contacts_macros) {
-				self.set_macros_names();
-			}
+		this.settings_cf = function(fieldname) {
 
+			// self.set_macros_names();
+			// settings = self.get_settings();
+
+			// while	(settings != true ) {
+			// 	settings = self.get_settings();
+			// }
+
+			/*
 			if (!settings || !settings.select_leads_cf) {
 				settings.select_leads_cf = self.params.leads_macros;
 				settings.select_leads_cf = settings.select_leads_cf.map( function( val, i ) {
@@ -473,6 +484,8 @@ define([
 				$('input[name="'+fieldname+'"]').val( event.currentTarget.value );
 				$('input[name="'+fieldname+'"]').trigger ( 'change' ) ;
 			});
+			*/
+			$('input[name="'+fieldname+'"]').after('<div>'+fieldname+'</div>');
 		}
 
 		this.get_templates = function() {

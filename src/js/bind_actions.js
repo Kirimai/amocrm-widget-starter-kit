@@ -307,6 +307,7 @@ window.tagosagoru.bind_actions.push(
 		$(document).off('click', '.tagosago_get_diagbtn').on('click', '.tagosago_get_diagbtn', function(){
 			$(this).attr('disabled');
 			self.getTemplate('loading', function(template) {
+				$('.to_loading').remove();
 				$('#to_list').append(
 					template.render({
 							// id: 'to_loading',
@@ -320,7 +321,7 @@ window.tagosagoru.bind_actions.push(
 					'_element': 'data',
 					'_action': 'tosearch',
 					'json' : 'true',
-					'car_vin': self.get_settings_field_id("field_vin", self)
+					'car_vin': self.get_settings_field_id("to_car_vin", self)
 				};
 			}
 			if ($(this).attr('id') == 'tagosago_get_diagbtn_plate') {
@@ -328,53 +329,57 @@ window.tagosagoru.bind_actions.push(
 					'_element': 'data',
 					'_action': 'tosearch',
 					'json' : 'true',
-					'car_plate': self.get_settings_field_id("field_plate", self)
+					'car_plate': self.get_settings_field_id("to_car_plate", self)
 				};
 			}
+			if (dataarr) {
 
-			self.crm_post(
-				'https://tag-osago.ru/to/search',
-				dataarr,
-				function (msg) {
-					console.log(msg);
-					$('#to_list').html('');
+				self.crm_post(
+					'https://tag-osago.ru/to/search',
+					dataarr,
+					function (msg) {
+						console.log(msg);
+						$('#to_list').html('');
 
-					if ( !msg.error ) {
+						if ( !msg.error ) {
 
-						self.getTemplate('tagosago_diags', function(template) {
-							$('#to_list').append(
-								template.render({
-										id: 'tagosago_diags',
-										items: msg
-									}
+							self.getTemplate('tagosago_diags', function(template) {
+								$('#to_list').append(
+									template.render({
+											id: 'tagosago_diags',
+											items: msg
+										}
+									)
 								)
-							)
-						});
-						// self.set_settings_field_id('field_vin',msg[0]['car_vin'],self);
-					} else {
+							});
+							// self.set_settings_field_id('to_car_vin',msg[0]['car_vin'],self);
+						} else {
 
-						self.getTemplate('tagosago_diags_404', function(template) {
-							$('#to_list').append(
-								template.render({
-										id: 'tagosago_diags'
-									}
+							self.getTemplate('tagosago_diags_404', function(template) {
+								$('#to_list').append(
+									template.render({
+											id: 'tagosago_diags'
+										}
+									)
 								)
-							)
-						});
+							});
+						}
+
+
+
+						$('.to_loading').remove();
+					},
+					'json',
+					function () {
+						$('#to_list').html('');
+						$('.to_loading').remove();
+						$(this).removeAttr('disabled');
+						console.log('Error');
 					}
-
-
-
-					$('.to_loading').remove();
-				},
-				'json',
-				function () {
-					$('#to_list').html('');
-					$('.to_loading').remove();
-					$(this).removeAttr('disabled');
-					console.log('Error');
-				}
-			);
+				);
+			} else {
+				
+			}
 		});
 
 
