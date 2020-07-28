@@ -19,6 +19,8 @@ window.tagosagoru.settings = [];
 window.tagosagoru.advanced_settings = [];
 window.tagosagoru.macros = [];
 window.tagosagoru.calculate_data = [];
+window.tagosagoru.mergeresult = [];
+
 
 window.tagosagoru.execute = function(event, widget){
 	var result = true;
@@ -68,7 +70,7 @@ define([
 	'./js/customers.js?' + Date.now(),
 	'./js/leads.js?' + Date.now()
 
-	], function ($, _, Twig, Modal) {
+	], function ($, _, Twig, Modal, moment) {
 
 	var CustomWidget = function () {
 		var self = this,
@@ -96,6 +98,7 @@ define([
 			}, {});
 
 		};
+
 
 		this.object2array = function (obj) {
 			return Object.keys(obj).map(function (key) {
@@ -323,25 +326,16 @@ define([
 				disabled: disabled
 			});
 		};
-
-		this.render_different_tofield = function(fieldname, loc_val, rem_val) {
-			// return twig({
-			// 	ref: '/templates/different_tofield.twig'
-			// }).render({
-			// 	fieldname: fieldname, 
-			// 	loc_val: loc_val, 
-			// 	rem_val: rem_val
-			// });
+		
+		this.render_diag_card_transfer = function(callback) {
 			return self.render({
-				href: '/templates/different_tofield.twig',
+				href: '/templates/diag_card_transfer.twig',
 				base_path: self.params.path,
-				load: function(){}
-			}, {
-				fieldname: fieldname, 
-				loc_val: loc_val, 
-				rem_val: rem_val
-			});
+				v: this.get_version(),
+				load: callback
+			}, {});
 		};
+
 
 		this.date_field = function(id, class_name) {
 			return twig({
@@ -447,37 +441,54 @@ define([
 		}
 
 		this.set_settings_field_id = function(fieldname, newval) {
-			var area = self.system().area;
+			try {
 
-			if ($.inArray(area, ['lcard', 'llist']) != -1) {
-				window.tagosagoru.card.vin = false;
-				settings = self.get_settings();
-				settings_val = settings[fieldname];
-				settings_field_id = settings_val.replace(/\{|\}|(\.cf\.)|(leads)|(contacts)/g, '');
-				settings_field_id = parseInt(settings_field_id);
-				var is_contact = (settings_val.includes("contacts") ? true : false);
-				var is_lead = (settings_val.includes("leads") ? true : false);
-				if (is_lead) {
-					if ( settings_field_id ) {
-						result = $('[name="CFV['+settings_field_id+']"]').val(newval).trigger('change');
-					} else {
-						result = $('[name="CFV['+settings_field_id+']"]').val(newval).trigger('change');
-					}
-					window.tagosagoru.calculate_data[fieldname] = result;
-					return window.tagosagoru.calculate_data[fieldname];
+ 				var moment = require('moment'); // require
+
+				
+				if ( moment(newval, "YYYY-MM-DD", true).isValid() ) {
+					newval = moment(newval).format('DD.MM.YYYY');
+					console.log('DATE FIELD!! '+newval);
 				}
-				if (is_contact) {
-					if ( settings_field_id ) {
-						$('[name="CFV['+settings_field_id+']"]').each(function(index, item) {
-							window.tagosagoru.calculate_data['contacts'][index][fieldname] = $(item).val(newval).trigger('change');
-						});
-					} else {
-						$('[name="CFV['+settings_field_id+']"]').each(function(index, item) {
-							window.tagosagoru.calculate_data['contacts'][index][fieldname] = $(item).val(newval).trigger('change');
-						});
+				
+				var area = self.system().area;
+
+				if ($.inArray(area, ['lcard', 'llist']) != -1) {
+					window.tagosagoru.card.vin = false;
+					settings = self.get_settings();
+					settings_val = settings[fieldname];
+					if (!settings_val) {
+						return false;
 					}
-					return window.tagosagoru.calculate_data['contacts'][0][fieldname] = $(item).val(newval).trigger('change');
+					settings_field_id = settings_val.replace(/\{|\}|(\.cf\.)|(leads)|(contacts)/g, '');
+					settings_field_id = parseInt(settings_field_id);
+					var is_contact = (settings_val.includes("contacts") ? true : false);
+					var is_lead = (settings_val.includes("leads") ? true : false);
+					if (is_lead) {
+						if ( settings_field_id ) {
+							result = $('[name="CFV['+settings_field_id+']"]').val(newval).trigger('change');
+						} else {
+							result = $('[name="CFV['+settings_field_id+']"]').val(newval).trigger('change');
+						}
+						window.tagosagoru.calculate_data[fieldname] = result;
+						return window.tagosagoru.calculate_data[fieldname];
+					}
+					if (is_contact) {
+						if ( settings_field_id ) {
+							$('[name="CFV['+settings_field_id+']"]').each(function(index, item) {
+								window.tagosagoru.calculate_data['contacts'][index][fieldname] = $(item).val(newval).trigger('change');
+							});
+						} else {
+							$('[name="CFV['+settings_field_id+']"]').each(function(index, item) {
+								window.tagosagoru.calculate_data['contacts'][index][fieldname] = $(item).val(newval).trigger('change');
+							});
+						}
+						return window.tagosagoru.calculate_data['contacts'][0][fieldname] = $(item).val(newval).trigger('change');
+					}
 				}
+			} catch (e) {
+			   // инструкции для обработки ошибок
+			   console.log(e); // передать объект исключения обработчику ошибок
 			}
 		}
 
@@ -513,17 +524,29 @@ define([
 				});
 			}
 
-			vinselect_lead = self.render_select(fieldname+'_select_lead', settings.select_leads_cf, $('input[name="'+fieldname+'"]').val(), fieldname+'_select_class dopfield', fieldname+'_select_lead');
+			vinselect_lead = self.render_select(
+				fieldname+'_select_lead', 
+				settings.select_leads_cf, 
+				$('input[name="'+fieldname+'"]').val(), 
+				fieldname+'_select_lead control--select widget-settings__avito-chats-ads-item', 
+				fieldname+'_select_lead'
+			);
 			$('input[name="'+fieldname+'"]').after(vinselect_lead);
-			$('input[name="'+fieldname+'"]').after('<div>Сделка:</div>');
+			$(fieldname+'_select_lead').prepend('<div>Сделка:</div>');
 			$('#'+fieldname+'_select_lead').on('change', function(event) {
 				$('input[name="'+fieldname+'"]').val( event.currentTarget.value );
 				$('input[name="'+fieldname+'"]').trigger ( 'change' ) ;
 			});
 
-			vinselect_contact = self.render_select(fieldname+'_select_contact', settings.select_contacts_cf, $('input[name="'+fieldname+'"]').val(), fieldname+'_select_class dopfield', fieldname+'_select_contact');
+			vinselect_contact = self.render_select(
+				fieldname+'_select_contact', 
+				settings.select_contacts_cf, 
+				$('input[name="'+fieldname+'"]').val(), 
+				fieldname+'_select_contact control--select widget-settings__avito-chats-ads-item', 
+				fieldname+'_select_contact'
+			);
 			$('input[name="'+fieldname+'"]').after(vinselect_contact);
-			$('input[name="'+fieldname+'"]').after('<div>Контакт:</div>');
+			$(fieldname+'_select_contact').prepend('<div>Контакт:</div>');
 			$('#'+fieldname+'_select_contact').on('change', function(event) {
 				$('input[name="'+fieldname+'"]').val( event.currentTarget.value );
 				$('input[name="'+fieldname+'"]').trigger ( 'change' ) ;

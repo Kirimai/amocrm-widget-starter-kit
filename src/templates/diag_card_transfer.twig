@@ -1,0 +1,122 @@
+
+<div id="local_val,remote_val">
+	<div class="modal-body__inner  modal-body_doubles-merge ">
+		<h2 class="modal-body__caption head_2">{{lang.diagTransferHead}}</h2>
+		<div class="modal-body__actions actions__doubles_action">
+			<button type="button" class="button-input    modal-body__actions__save js-modal-accept js-button-with-loader js-merge-start" tabindex="1"><span class="button-input-inner "><span class="button-input-inner__text">Перенести</span></span></button>
+			<button type="button" class="button-input button-cancel " tabindex="2" style=""><span>Отменить</span></button>
+		</div>
+		<div class="content__account__note__wrapper">
+			<div class="content__account__note">
+				<p>{{lang.diagTransferDesc}}</p>
+			</div>
+		</div>
+		<div class="merge-form__container">
+			<form class="merge-form__form js-merge-form" id="diag_transfer_form">
+
+
+				<div class="merge-form__table-container js-hs-wrapper hs-wrapper hs__wrapper_no-boundary hs-at-start hs-at-end">
+					<div class="merge-form__table js-hs-scroller custom-scroll hs-wrapper_no-hand" data-horizontal="y" style="overflow-x: scroll;">
+						<input type="hidden" name="id[]" value="local_val"><input type="hidden" name="id[]" value="remote_val">
+						<div class="merge-form__row-container" id="field_difference_list">
+							
+							{% for field in fieldset %}
+								{% if field.is_different == true %}
+									<div class="merge-form__table-row merge-form__table-row_contracted  js-merge-table-row js-merge-main-field" style="height: unset;">
+
+										<div class="merge-form__table-cell" data-field-code="{{field.id}}">
+											{% if field.i == 1 %}
+												<div class="merge-form__cell-options">
+													<span class="merge-form__link merge-form__link_select-all">Выбрать всё</span>
+													<span class="merge-form__link merge-form__link_open-card js-open_card">По данным АМО</span>
+												</div>
+											{% endif %}
+											<div class="cell__body">
+												<label for="diag_local_{{field.id}}" class="control-radio__label merge-form__radio-control">
+													<div class="control-radio">
+														<input 
+															type="radio" 
+															name="result_element_{{field.id}}" 
+															id="diag_local_{{field.id}}" 
+															value="{% if field.local != false %}
+															{{field.local}}
+															{% endif %}" 
+															data-field-id="{{field.id}}" 
+															data-value="{% if field.local != false %}
+															{{field.local}}
+															{% endif %}"
+														>
+														<div class="control-radio__helper "></div>
+													</div>
+													<span class="control-radio-label-text element__text" >{{field.local}}</span>
+												</label>
+											</div>
+										</div>
+
+										<div class="merge-form__table-cell" data-field-code="{{field.id}}">
+											{% if field.i == 1 %}
+												<div class="merge-form__cell-options">
+													<span class="merge-form__link merge-form__link_select-all">Выбрать всё</span>
+													<span class="merge-form__link merge-form__link_open-card js-open_card">По данным ДК</span>
+												</div>
+											{% endif %}
+											<div class="cell__body">
+												<label for="diag_remote_{{field.id}}" class="control-radio__label merge-form__radio-control ">
+													<div class="control-radio">
+														<input 
+															type="radio" 
+															name="result_element_{{field.id}}" 
+															id="diag_remote_{{field.id}}" 
+															value="{% if field.remote != false %}
+															{{field.remote}}
+															{% endif %}" 
+															data-field-id="{{field.id}}" 
+															data-value="{% if field.remote != false %}
+															{{field.remote}}
+															{% endif %}"
+															checked="" 
+														>
+														<div class="control-radio__helper "></div>
+													</div>
+													<span class="control-radio-label-text element__text" >{{field.remote}}</span>
+												</label>
+											</div>
+										</div>
+
+									</div>
+								{% endif %}
+							{% endfor %}
+
+						</div>
+					</div>
+				</div>
+
+				
+				<div class="merge-form__table-headcol" id="field_difference_list_result">
+
+					{% for field in fieldset %}
+						{% if field.is_different == true %}
+						    <div class="merge-form__table-row merge-form__table-row_contracted  js-merge-table-row ">
+								<div class="merge-form__table-cell">
+									{% if field.i == 1 %}
+							    		<div class="merge-form__cell-options">
+							    			<span class="merge-form__link">Результат</span>
+							    		</div>
+							    	{% endif %}
+									<div class="form-field__label">{{ field.lang }}</div>
+									<div class="form-result" id="result_element_{{ field.id }}" data-for="{{ field.id }}">
+										<div class="cell__body"><span class="form-result__text">{% if field.remote != false %}
+															{{field.remote}}
+															{% endif %}</span></div>
+									</div>
+								</div>
+							</div>
+						{% endif %}
+					{% endfor %}
+
+
+				</div>
+			</form>
+		</div>
+	</div>
+</div>

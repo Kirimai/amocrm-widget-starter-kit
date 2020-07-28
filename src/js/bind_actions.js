@@ -292,120 +292,139 @@ window.tagosagoru.bind_actions.push(
 			}
 		});
 
-		$(document).off('keydown', '#tagosago_smsmes').on('keydown', '#tagosago_smsmes', function (e) {
-			self.count_chars($('#tagosago_smsmes'));
-		});
+		
+		
+		
 
-		$(document).off('paste', '#tagosago_smsmes').on('paste', '#tagosago_smsmes', function (e) {
-			self.count_chars($('#tagosago_smsmes'));
-		});
-
-		$(document).off('keydown', '#tagosago_dp_message').on('keydown', '#tagosago_dp_message', function (e) {
-			self.count_chars($('#tagosago_dp_message'));
-		});
-
+		// Перенос ДК из программы в АМО
 		$(document).off('click', '.tagosago_dk_pop').on('click', '.tagosago_dk_pop', function (e) {
 			var Modal = require('lib/components/base/modal');
 			new Modal({
-	             // собственный класс для модального окна,
-	             // если нужно в нем поменять какие-то стили
-	             class_name: 'tagosago_dk_pop__modal',
+				 // собственный класс для модального окна,
+				 // если нужно в нем поменять какие-то стили
+				 class_name: 'tagosago_dk_pop__modal modal-entity-merge modal-doubles-merge merge-form__modal modal-leads-merge',
 
-	             // метод, отрабатывающий при
-	             // готовности модального окна
-	             // получает в параметр jQuery-объект $modal_body
-	             // тела модального окна, все внутренности
-	             // окна будут в нем
-	             init: function($modal_body) {
-	             	data = $('#card_' + e.target.attributes[1].nodeValue );
+				 // метод, отрабатывающий при
+				 // готовности модального окна
+				 // получает в параметр jQuery-объект $modal_body
+				 // тела модального окна, все внутренности
+				 // окна будут в нем
+				 init: function($modal_body) {
 
-					var childs = $(data).children();
-					var remote = [],
-						local = [],
-						different = [];
-					var print_data = '';
+				 	var loading_data ='<div class="modal-body__inner  modal-body_doubles-merge " id="tagosago_dk_pop__modal"></div>';
+				 	var lang = self.i18n('userLang'), settings = self.get_settings();
+				 	settings_names = self.i18n('settings');
+
+					$modal_body
+						.html(loading_data);
+						// .append('<span class="modal-body__close"><span class="icon icon-modal-close"></span></span>');
+
+					card_data = $('#card_' + e.target.attributes[1].nodeValue );
+
+					var childs = $(card_data).children(),
+						fieldset = [],
+						mergeresult = '',
+						print_data = '';
 
 
-
+					// Проходимся по полям, пришедшим с сайта
 					for (var i = 1; i < childs.length - 1; i++)
 					{
-						fieldname = $(childs[i]).attr('id');
-						rem_val = $(childs[i]).text();
-						loc_val = self.get_settings_field_id( fieldname );
+						field_id = $(childs[i]).attr('id');
+						fieldset[ i ] = [];
+						fieldset[ i ]['i'] = i;
+						fieldset[ i ]['id'] = $(childs[i]).attr('id');
+						fieldset[ i ]['lang'] = settings_names[fieldset[ i ]['id']];
+						fieldset[ i ]['remote'] = $(childs[i]).text();
+						fieldset[ i ]['local'] = self.get_settings_field_id( field_id );
+						fieldset[ i ]['is_different'] = ( fieldset[ i ]['remote'] == fieldset[ i ]['local'] ? false : true );
 
-						remote[fieldname] = rem_val;
-						local[ fieldname ] = loc_val;
-
-						if ( rem_val == loc_val) {
-							different[ fieldname ] = false;
-						} else {
-							different[ fieldname ] = [];
-							different[ fieldname ]['local'] = loc_val;
-							different[ fieldname ]['remote'] = rem_val;
-							print_data = self.render_different_tofield(fieldname, loc_val, rem_val);
-						}
-						// console.log('local '+fieldname+' = '+local[ fieldname ] );
+						window.tagosagoru.mergeresult[ 'result_element_'+fieldset[ i ]['id'] ] = fieldset[ i ]['remote'];
 					}
-					console.log(remote);
-					console.log(local);
-					console.log(different);
 
+					// console.log('generated fieldset');
+					// console.log(fieldset);
+
+					self.getTemplate('diag_card_transfer',
+						function (template) {
+							$('#tagosago_dk_pop__modal').append(
+								template.render({
+									'lang':lang,
+									'fieldset':fieldset
+								})
+							);							
+						}
+					);
+					$('.tagosago_dk_pop__modal .modal-body').addClass('merge-modal__body').addClass('modal-body-relative');
+					$modal_body
+						.trigger('modal:loaded')
+						.trigger('modal:centrify')
 					
 
-					// a, b - массивы ваши
-		
+				 },
 
-					// console.log(remote);
-					// different
-					// html = 
+				 // кастомный `destroy`, может вернуть `false`,
+				 // тогда закрытия окна не произойдет
+				 destroy: _.noop,
 
-						
-	        		$modal_body
-						.trigger('modal:loaded')
-						.html(print_data)
-						.trigger('modal:centrify')
-						.append('<span class="modal-body__close"><span class="icon icon-modal-close"></span></span>');
+				 // контейнер, куда попадет
+				 // модальное окно и относительно
+				 // какого элемента будет центрироваться
+				 container: document.body,
 
-	             },
+				 // если нужно запретить закрытие модального окна
+				 // по клику на оверлэе, просто передаем в options
+				 // `disable_overlay_click`
+				 disable_overlay_click: false,
 
-	             // кастомный `destroy`, может вернуть `false`,
-	             // тогда закрытия окна не произойдет
-	             destroy: _.noop,
+				 // если нужно запретить закрытие модального окна
+				 // по нажатию на escape
+				 disable_escape_keydown: false,
 
-	             // контейнер, куда попадет
-	             // модальное окно и относительно
-	             // какого элемента будет центрироваться
-	             container: document.body,
+				 // если нужно запретить дефолтную обработку enter
+				 disable_enter_keydown: false,
 
-	             // если нужно запретить закрытие модального окна
-	             // по клику на оверлэе, просто передаем в options
-	             // `disable_overlay_click`
-	             disable_overlay_click: false,
+				 // параметр отвечает за анимацию всплывания
+				 // модального окна, если передать `true`,
+				 // то оно запустится с анимацией увеличения и появления
+				 init_animation: false,
 
-	             // если нужно запретить закрытие модального окна
-	             // по нажатию на escape
-	             disable_escape_keydown: false,
+				 // по умолчанию оверлей у модалок белый,
+				 // изменить если нужен темный оверлей
+				 default_overlay: false,
 
-	             // если нужно запретить дефолтную обработку enter
-	             disable_enter_keydown: false,
-
-	             // параметр отвечает за анимацию всплывания
-	             // модального окна, если передать `true`,
-	             // то оно запустится с анимацией увеличения и появления
-	             init_animation: false,
-
-	             // по умолчанию оверлей у модалок белый,
-	             // изменить если нужен темный оверлей
-	             default_overlay: false,
-
-	             // элемент, который получает фокус,
-	             // по умолчанию это кнопка акцепта. нужен для того,
-	             // чтобы снимать фокус с кнопки вызвавшей событие
-	             focus_element: '.js-modal-accept',
-	        });
-	        
+				 // элемент, который получает фокус,
+				 // по умолчанию это кнопка акцепта. нужен для того,
+				 // чтобы снимать фокус с кнопки вызвавшей событие
+				 focus_element: '.js-modal-accept',
+			});
+			
 		});
 
+		$(document).on('change', '#diag_transfer_form .merge-form__radio-control input:checked', function(e) {
+			var field_id = $(this).attr('name');
+			var field_val = $(this).val();
+			// console.log('id:'+field_id+' val:'+field_val);
+			window.tagosagoru.mergeresult[field_id] = field_val;
+			$('#'+field_id+' .form-result__text').text(field_val);
+		});
+
+		$(document).on('click', '#tagosago_dk_pop__modal .modal-body__actions__save', function(e) {
+			console.log('save');
+			// res_data = self.object2array( window.tagosagoru.mergeresult );
+			res_data = window.tagosagoru.mergeresult;
+			for (const [key, value] of Object.entries(res_data)) {
+				field_name =  key.substring(15,key.length);
+				console.log(field_name+`: ${value}`);
+				self.set_settings_field_id(field_name,value);
+			}
+			$('.modal').remove();
+			// res_data.forEach((v,i) =>{
+			// 	field_name =  res_data[i].substring(14,res_data[i].length);
+			// 	console.log(field_name+':'+field_name);
+			// 	self.set_settings_field_id(field_name,v);
+			// });
+		})
 
 		$(document).off('click', '.tagosago_get_diagbtn').on('click', '.tagosago_get_diagbtn', function(){
 			$(this).attr('disabled');
